@@ -1,0 +1,33 @@
+FROM node:20-alpine AS base
+
+# All deps stage
+FROM base AS deps
+WORKDIR /app
+RUN corepack enable pnpm
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+
+# Production only deps stage
+FROM base AS production-deps
+WORKDIR /app
+RUN corepack enable pnpm
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile --prod
+
+# Build stage
+FROM base AS build
+WORKDIR /app
+RUN corepack enable pnpm
+COPY --from=deps /app/node_modules /app/node_modules
+COPY . .
+RUN pnpm run build
+
+# Production stage
+FROM base
+ENV NODE_ENV=production
+WORKDIR /app
+COPY --from=production-deps /app/node_modules /app/build/node_modules
+COPY --from=build /app/build /app/build
+EXPOSE 3333
+WORKDIR /app/build
+CMD ["node", "bin/server.js"]
