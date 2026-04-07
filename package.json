@@ -73,6 +73,7 @@
     "better-sqlite3": "^12.8.0",
     "jsonwebtoken": "^9.0.3",
     "luxon": "^3.7.2",
+    "openai": "^6.33.0",
     "pg": "8.20.0",
     "reflect-metadata": "^0.2.2"
   },

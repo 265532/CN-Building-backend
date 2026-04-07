@@ -36,6 +36,7 @@ export class AchievementSchema extends BaseModel {
 
 export class ArchitecturePointSchema extends BaseModel {
   static $columns = [
+    'address',
     'category',
     'createdAt',
     'description',
@@ -48,6 +49,8 @@ export class ArchitecturePointSchema extends BaseModel {
     'updatedAt',
   ] as const
   $columns = ArchitecturePointSchema.$columns
+  @column()
+  declare address: string | null
   @column()
   declare category: string | null
   @column.dateTime({ autoCreate: true })
@@ -66,6 +69,57 @@ export class ArchitecturePointSchema extends BaseModel {
   declare longitude: string
   @column()
   declare name: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
+export class KnowledgeNodeSchema extends BaseModel {
+  static $columns = [
+    'comparisons',
+    'content',
+    'createdAt',
+    'id',
+    'title',
+    'type',
+    'updatedAt',
+  ] as const
+  $columns = KnowledgeNodeSchema.$columns
+  @column()
+  declare comparisons: any | null
+  @column()
+  declare content: string | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare title: string
+  @column()
+  declare type: string | null
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
+export class KnowledgeRelationSchema extends BaseModel {
+  static $columns = [
+    'createdAt',
+    'id',
+    'relationType',
+    'sourceId',
+    'targetId',
+    'updatedAt',
+  ] as const
+  $columns = KnowledgeRelationSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare relationType: string | null
+  @column()
+  declare sourceId: number | null
+  @column()
+  declare targetId: number | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
 }
@@ -96,6 +150,19 @@ export class LearningRecordSchema extends BaseModel {
   declare radarData: any | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
+  @column()
+  declare userId: number | null
+}
+
+export class UserAchievementSchema extends BaseModel {
+  static $columns = ['achievementId', 'id', 'unlockedAt', 'userId'] as const
+  $columns = UserAchievementSchema.$columns
+  @column()
+  declare achievementId: number | null
+  @column({ isPrimary: true })
+  declare id: number
+  @column.dateTime()
+  declare unlockedAt: DateTime
   @column()
   declare userId: number | null
 }

@@ -1,10 +1,11 @@
-# 中国古建筑智慧学习平台 - 阶段一后端交接文档
+# [已完成] 中国古建筑智慧学习平台 - 阶段一后端交接文档
 
 ## 1. 数据库连接信息与配置方式
 
 本项目使用 **PostgreSQL** 作为核心关系型数据库，通过 AdonisJS 的 **Lucid ORM** 进行交互。
 
 ### 本地开发环境
+
 - 我们已通过 `docker-compose.yml` 提供了预配置的 PostgreSQL 容器。
 - 启动数据库：运行 `docker-compose up -d postgres`
 - 本地开发连接参数（定义在 `.env` 或 `.env.example` 中）：
@@ -15,6 +16,7 @@
   - `DB_DATABASE`: `cp_backend`
 
 ### 数据表与迁移
+
 - 所有的表结构迁移脚本存放在 `database/migrations/`。
 - 运行迁移：`node ace migration:run`
 - 回滚迁移：`node ace migration:rollback`
@@ -26,6 +28,7 @@
 为了确保前后端交互的一致性，本项目已经配置了统一响应拦截器（`app/middleware/format_response_middleware.ts`）与全局异常处理器（`app/exceptions/handler.ts`）。
 
 ### 成功响应
+
 所有由控制器直接返回的数据（对象、数组、字符串等），都会被中间件自动包装为以下标准格式：
 
 ```json
@@ -41,6 +44,7 @@
 ```
 
 ### 错误响应
+
 业务异常或框架内部抛出的异常（如 404, 401），会被异常处理器捕获，并统一返回如下格式：
 
 ```json
@@ -52,6 +56,7 @@
 ```
 
 ### 数据验证错误 (Validation Error)
+
 表单/请求参数验证失败（422 Unprocessable Entity），其具体错误信息会挂载在 `data` 字段中：
 
 ```json

@@ -7,13 +7,6 @@ RUN corepack enable pnpm
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
-# Production only deps stage
-FROM base AS production-deps
-WORKDIR /app
-RUN corepack enable pnpm
-COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile --prod
-
 # Build stage
 FROM base AS build
 WORKDIR /app
@@ -26,8 +19,8 @@ RUN pnpm run build
 FROM base
 ENV NODE_ENV=production
 WORKDIR /app
-COPY --from=production-deps /app/node_modules /app/build/node_modules
 COPY --from=build /app/build /app/build
-EXPOSE 3333
 WORKDIR /app/build
+RUN corepack enable pnpm && pnpm install --frozen-lockfile --prod
+EXPOSE 3333
 CMD ["node", "bin/server.js"]

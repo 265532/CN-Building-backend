@@ -31,64 +31,18 @@ export default class AuthController {
     this.authService = new AuthService()
   }
 
-  async accountLogin({ request, response }: HttpContext) {
-    try {
-      const payload = await request.validateUsing(accountLoginValidator)
-      const data = await this.authService.accountLogin(payload.username, payload.password)
-
-      return response.json({
-        code: 200,
-        message: 'success',
-        data,
-      })
-    } catch (error: any) {
-      return response.status(400).json({
-        code: 400,
-        message: error.message || 'Validation or login failed',
-        data: null,
-      })
-    }
+  async accountLogin({ request }: HttpContext) {
+    const payload = await request.validateUsing(accountLoginValidator)
+    return await this.authService.accountLogin(payload.username, payload.password)
   }
 
-  async accountRegister({ request, response }: HttpContext) {
-    try {
-      const payload = await request.validateUsing(accountRegisterValidator)
-      const data = await this.authService.accountRegister(payload.username, payload.password)
-
-      return response.json({
-        code: 200,
-        message: 'success',
-        data,
-      })
-    } catch (error: any) {
-      return response.status(400).json({
-        code: 400,
-        message: error.messages ? 'Validation failed' : error.message || 'Registration failed',
-        data: error.messages || null,
-      })
-    }
+  async accountRegister({ request }: HttpContext) {
+    const payload = await request.validateUsing(accountRegisterValidator)
+    return await this.authService.accountRegister(payload.username, payload.password)
   }
 
-  async wechatLogin({ request, response }: HttpContext) {
-    try {
-      const payload = await request.validateUsing(wechatLoginValidator)
-      const data = await this.authService.wechatLogin(
-        payload.code,
-        payload.encryptedData,
-        payload.iv
-      )
-
-      return response.json({
-        code: 200,
-        message: 'success',
-        data,
-      })
-    } catch (error: any) {
-      return response.status(400).json({
-        code: 400,
-        message: error.message || 'WeChat login failed',
-        data: null,
-      })
-    }
+  async wechatLogin({ request }: HttpContext) {
+    const payload = await request.validateUsing(wechatLoginValidator)
+    return await this.authService.wechatLogin(payload.code, payload.encryptedData, payload.iv)
   }
 }

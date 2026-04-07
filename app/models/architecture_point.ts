@@ -23,6 +23,9 @@ export default class ArchitecturePoint extends BaseModel {
   declare category: string | null
 
   @column()
+  declare address: string | null
+
+  @column()
   declare description: string | null
 
   @column()

@@ -1,4 +1,5 @@
 import User from '#models/user'
+import { Exception } from '@adonisjs/core/exceptions'
 import { JwtUtil } from '#utils/jwt_util'
 import { CryptoUtil } from '#utils/crypto_util'
 import { WechatUtil } from '#utils/wechat_util'
@@ -10,16 +11,16 @@ export class AuthService {
   async accountLogin(username: string, passwordPlain: string) {
     const user = await User.findBy('username', username)
     if (!user) {
-      throw new Error('Invalid credentials')
+      throw new Exception('Invalid credentials', { status: 400 })
     }
 
     if (!user.passwordHash) {
-      throw new Error('Invalid credentials')
+      throw new Exception('Invalid credentials', { status: 400 })
     }
 
     const isValid = await CryptoUtil.verifyPassword(user.passwordHash, passwordPlain)
     if (!isValid) {
-      throw new Error('Invalid credentials')
+      throw new Exception('Invalid credentials', { status: 400 })
     }
 
     const token = JwtUtil.generateToken({ userId: user.id })
@@ -32,7 +33,7 @@ export class AuthService {
   async accountRegister(username: string, passwordPlain: string) {
     const existingUser = await User.findBy('username', username)
     if (existingUser) {
-      throw new Error('Username already exists')
+      throw new Exception('Username already exists', { status: 400 })
     }
 
     const passwordHash = await CryptoUtil.hashPassword(passwordPlain)
@@ -54,7 +55,9 @@ export class AuthService {
   async wechatLogin(code: string, encryptedData?: string, iv?: string) {
     const sessionData = await WechatUtil.code2Session(code)
     if (sessionData.errcode || !sessionData.openid) {
-      throw new Error(`WeChat login failed: ${sessionData.errmsg || 'Unknown error'}`)
+      throw new Exception(`WeChat login failed: ${sessionData.errmsg || 'Unknown error'}`, {
+        status: 400,
+      })
     }
 
     const openid = sessionData.openid

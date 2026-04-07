@@ -32,3 +32,12 @@
 - [ ] **前端联调**：前端对接 `wechat-login` 时，需确认微信端 `encryptedData` 与 `iv` 传参格式和触发时机。
 - [ ] **测试完善**：当前在 `tests/unit/` 下仅搭建了基本测试骨架，后续需结合测试数据库完成针对 Service 层的完整集成和单元测试覆盖。
 - [ ] **异常捕捉统一化**：建议进一步在 `app/exceptions/handler.ts` 中针对 JWT 过期、微信 API 报错等定义更优雅的全局错误转换机制。
+
+## 4. 全局审查与后续规划 (2026-04-03)
+
+在最近一次的项目全局审查中，我们确认了 Auth 模块的核心逻辑实现正确。但是，在路由设计与控制器规范上发现了可优化的空间：
+
+1. 当前的 `UserController` 中路由定义为 `/api/v1/user/info`，违背了 RESTful 规范中的复数要求。已在 `docs/backend/dev_plan.md` 中计划统一变更为 `/api/v1/users/me` 等格式。
+2. 当前控制器中大量存在 `{"code": 200, "message": "success", "data": ...}` 的冗余返回封装，将依赖全局 `FormatResponseMiddleware` 进行自动包装，清理手动返回逻辑。
+
+具体详见 [后端开发计划](../../docs/backend/dev_plan.md)。

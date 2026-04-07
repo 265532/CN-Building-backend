@@ -1,4 +1,5 @@
 import User from '#models/user'
+import { Exception } from '@adonisjs/core/exceptions'
 
 export class UserService {
   /**
@@ -7,7 +8,7 @@ export class UserService {
   async getUserInfo(userId: number) {
     const user = await User.find(userId)
     if (!user) {
-      throw new Error('User not found')
+      throw new Exception('User not found', { status: 400 })
     }
 
     const userInfo = {
@@ -23,33 +24,19 @@ export class UserService {
   }
 
   /**
-   * Get user achievements
-   */
-  async getUserAchievements(userId: number) {
-    // In a real app, this might query an Achievements table linked to the User.
-    // For now, returning the medals from the user model as an example or an empty array.
-    const user = await User.find(userId)
-    if (!user) {
-      throw new Error('User not found')
-    }
-
-    return user.userMedals || []
-  }
-
-  /**
    * Update user info
    */
   async updateUserInfo(userId: number, updateData: { username?: string }) {
     const user = await User.find(userId)
     if (!user) {
-      throw new Error('User not found')
+      throw new Exception('User not found', { status: 400 })
     }
 
     if (updateData.username) {
       // Check if new username is already taken by another user
       const existingUser = await User.findBy('username', updateData.username)
       if (existingUser && existingUser.id !== userId) {
-        throw new Error('Username already exists')
+        throw new Exception('Username already exists', { status: 400 })
       }
       user.username = updateData.username
     }

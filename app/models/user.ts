@@ -1,7 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
-import type { HasMany } from '@adonisjs/lucid/types/relations'
+import { BaseModel, column, hasMany, manyToMany } from '@adonisjs/lucid/orm'
+import type { HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 import LearningRecord from './learning_record.js'
+import Achievement from './achievement.js'
 import hash from '@adonisjs/core/services/hash'
 import { compose } from '@adonisjs/core/helpers'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
@@ -42,4 +43,10 @@ export default class User extends compose(BaseModel, withAuthFinder(hash)) {
 
   @hasMany(() => LearningRecord)
   declare learningRecords: HasMany<typeof LearningRecord>
+
+  @manyToMany(() => Achievement, {
+    pivotTable: 'user_achievements',
+    pivotColumns: ['unlocked_at'],
+  })
+  declare achievements: ManyToMany<typeof Achievement>
 }

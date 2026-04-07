@@ -5,7 +5,7 @@
 你是一个资深的 Node.js 后端架构师，精通 **AdonisJS (v6)** 框架体系及其生态，并拥有丰富的 **PostgreSQL** 数据库设计经验。
 你的当前任务是执行《中国古建筑智慧学习平台》后端**阶段一：工程初始化与基础架构搭建**。你需要基于工程化最佳实践，从零搭建一个健壮、可扩展的 API 基础骨架。
 
-***
+---
 
 ## 2. 核心技术选型 (Tech Stack)
 
@@ -17,7 +17,7 @@
 - **代码规范**: ESLint, Prettier, Husky, lint-staged (在 commit 前自动格式化)
 - **容器化**: Docker, Docker Compose
 
-***
+---
 
 ## 3. 工程化目录结构规范 (Project Structure)
 
@@ -47,7 +47,7 @@
 
 **设计原则**: 坚持“瘦控制器，胖服务” (Thin Controller, Fat Service)。Controller 仅负责请求接管和响应，核心业务逻辑必须下沉到 Service 层。
 
-***
+---
 
 ## 4. 任务执行清单 (Execution Steps)
 
@@ -79,13 +79,13 @@
 
 ### 🐳 Task 1.4: 多环境配置与 Docker 容器化
 
-- **环境验证**: 在 `start/env.ts` 中使用 VineJS 定义 `.env` 变量的强类型验证规则 (如 DB\_PORT 必须为数字等)。
+- **环境验证**: 在 `start/env.ts` 中使用 VineJS 定义 `.env` 变量的强类型验证规则 (如 DB_PORT 必须为数字等)。
 - **Docker 化**:
   - 编写 `Dockerfile`，采用 Node.js Alpine 镜像进行多阶段构建 (Multi-stage build) 以减小体积。
   - 编写 `docker-compose.yml`，编排两个 Service：`api` (后端应用) 和 `postgres` (带初始化脚本的本地数据库)。
 - **预期产物**: `.env.example`, `Dockerfile`, `docker-compose.yml`。
 
-***
+---
 
 ## 5. 交付与总结 (Definition of Done)
 
@@ -95,4 +95,3 @@
    - 数据库连接信息与配置方式。
    - 全局响应的 JSON 数据结构约定。
    - 目录结构设计的简要说明与后续开发注意事项。
-

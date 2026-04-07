@@ -1,5 +1,6 @@
 import { type HttpContext } from '@adonisjs/core/http'
 import { UserService } from '#services/user_service'
+import { AchievementService } from '#services/achievement_service'
 import vine from '@vinejs/vine'
 
 const updateUserInfoValidator = vine.compile(
@@ -10,104 +11,37 @@ const updateUserInfoValidator = vine.compile(
 
 export default class UserController {
   private userService: UserService
+  private achievementService: AchievementService
 
   constructor() {
     this.userService = new UserService()
+    this.achievementService = new AchievementService()
   }
 
   /**
-   * GET /api/v1/user/info
+   * GET /api/v1/users/me
    */
   async getInfo(ctx: HttpContext) {
-    const { response, jwtUserId } = ctx
-    const userId = jwtUserId
-
-    if (!userId) {
-      return response.status(401).json({
-        code: 401,
-        message: 'Unauthorized',
-        data: null,
-      })
-    }
-
-    try {
-      const data = await this.userService.getUserInfo(userId)
-      return response.json({
-        code: 200,
-        message: 'success',
-        data,
-      })
-    } catch (error: any) {
-      return response.status(400).json({
-        code: 400,
-        message: error.message || 'Failed to get user info',
-        data: null,
-      })
-    }
+    const userId = ctx.jwtUserId!
+    return await this.userService.getUserInfo(userId)
   }
 
   /**
-   * PUT /api/v1/user/info
+   * PUT /api/v1/users/me
    */
   async updateInfo(ctx: HttpContext) {
-    const { request, response, jwtUserId } = ctx
-    const userId = jwtUserId
+    const { request, jwtUserId } = ctx
+    const userId = jwtUserId!
 
-    if (!userId) {
-      return response.status(401).json({
-        code: 401,
-        message: 'Unauthorized',
-        data: null,
-      })
-    }
-
-    try {
-      const payload = await request.validateUsing(updateUserInfoValidator)
-      const data = await this.userService.updateUserInfo(userId, payload)
-      return response.json({
-        code: 200,
-        message: 'success',
-        data,
-      })
-    } catch (error: any) {
-      return response.status(400).json({
-        code: 400,
-        message: error.messages
-          ? 'Validation failed'
-          : error.message || 'Failed to update user info',
-        data: error.messages || null,
-      })
-    }
+    const payload = await request.validateUsing(updateUserInfoValidator)
+    return await this.userService.updateUserInfo(userId, payload)
   }
 
   /**
-   * GET /api/v1/user/achievements
+   * GET /api/v1/users/achievements
    */
   async getAchievements(ctx: HttpContext) {
-    const { response, jwtUserId } = ctx
-    const userId = jwtUserId
-
-    if (!userId) {
-      return response.status(401).json({
-        code: 401,
-        message: 'Unauthorized',
-        data: null,
-      })
-    }
-
-    try {
-      const data = await this.userService.getUserAchievements(userId)
-      return response.json({
-        code: 200,
-        message: 'success',
-        data,
-      })
-    } catch (error: any) {
-      return response.status(400).json({
-        code: 400,
-        message: error.message || 'Failed to get achievements',
-        data: null,
-      })
-    }
+    const userId = ctx.jwtUserId!
+    return await this.achievementService.getUserAchievements(userId)
   }
 }

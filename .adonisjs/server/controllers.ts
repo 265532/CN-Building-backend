@@ -4,6 +4,12 @@
  */
 
 export const controllers = {
+  Ai: () => import('#controllers/ai_controller'),
   Auth: () => import('#controllers/auth_controller'),
+  Home: () => import('#controllers/home_controller'),
+  Image: () => import('#controllers/image_controller'),
+  KnowledgeNode: () => import('#controllers/knowledge_node_controller'),
+  Learn: () => import('#controllers/learn_controller'),
+  Map: () => import('#controllers/map_controller'),
   User: () => import('#controllers/user_controller'),
 }

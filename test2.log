@@ -1,0 +1,37 @@
+﻿c[ info ] loading hooks...
+[ info ] generating indexes...
+[ info ] codegen: created 5 file(s)
+[ info ] booting application to run tests...
+
+unit / Auth Service (tests\unit\auth_service.spec.ts)
+  鈭?generate and verify JWT token (6.35ms)
+
+unit / User Service (tests\unit\user_service.spec.ts)
+  鈭?getUserInfo format (0.13ms)
+
+functional / Auth Functional Tests (tests\functional\auth.spec.ts)
+[02:34:30.841] [32mINFO[39m (287800): [36mIncoming request: POST /api/v1/auth/register[39m
+[02:34:31.048] [32mINFO[39m (287800): [36mOutgoing response: POST /api/v1/auth/register - 200[39m
+  鈭?register new account (654.39ms)
+[02:34:31.098] [32mINFO[39m (287800): [36mIncoming request: POST /api/v1/auth/account-login[39m
+[02:34:31.140] [32mINFO[39m (287800): [36mOutgoing response: POST /api/v1/auth/account-login - 200[39m
+  鈭?login existing account (85.34ms)
+[02:34:31.184] [32mINFO[39m (287800): [36mIncoming request: POST /api/v1/auth/account-login[39m
+[02:34:31.226] [32mINFO[39m (287800): [36mOutgoing response: POST /api/v1/auth/account-login - 400[39m
+  鈭?fail login with wrong password (85.39ms)
+
+functional / User Functional Tests (tests\functional\user.spec.ts)
+[02:34:31.271] [32mINFO[39m (287800): [36mIncoming request: GET /api/v1/users/me[39m
+[02:34:31.296] [32mINFO[39m (287800): [36mOutgoing response: GET /api/v1/users/me - 200[39m
+  鈭?get user profile (71.03ms)
+[02:34:31.301] [32mINFO[39m (287800): [36mIncoming request: GET /api/v1/users/me[39m
+[02:34:31.302] [32mINFO[39m (287800): [36mOutgoing response: GET /api/v1/users/me - 401[39m
+  鈭?fail to get profile without token (4.92ms)
+[02:34:31.347] [32mINFO[39m (287800): [36mIncoming request: PUT /api/v1/users/me[39m
+[02:34:31.352] [32mINFO[39m (287800): [36mOutgoing response: PUT /api/v1/users/me - 200[39m
+  脳 update user profile (49.99ms)
+
+ FAILED 
+
+Tests  7 passed, 1 failed (8)
+ Time  1s
