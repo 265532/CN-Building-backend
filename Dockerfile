@@ -8,12 +8,11 @@ COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
 # Build stage
-FROM base AS build
+FROM deps AS build
 WORKDIR /app
-RUN corepack enable pnpm
-COPY --from=deps /app/node_modules /app/node_modules
 COPY . .
-RUN pnpm run build
+# 使用 ts-node 运行 ace 命令
+RUN npx ts-node bin/console.ts build
 
 # Production stage
 FROM base
